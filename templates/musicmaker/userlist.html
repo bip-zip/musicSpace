@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{%load static%}
+{% block bodyblock%}
+<div class="mb-0 pb-0 mx-3 d-flex justify-content-end">
+  <img height="120" style="position: relative; top:12px" src="{% static 'astro1.png'%}" alt="">
+</div>
+
+<div class="ms-body py-2 mt-0 mx-3">
+  <h4 class="text-white text-center fw-light">your playlists</h4>
+  
+</div>
+<div class="mx-3 p-2" style="height:50vh; overflow: auto;">
+{% for object in object_list %}
+       <div class="py-2">
+        <a href="{%url 'musicmaker:pl-detail' pk=object.id%}" class="text-decoration-none text-dark">
+            <div class="d-flex justify-content-around">
+                <div><h6 class="fw-light"> <i class="fa-solid fa-music"></i> &nbsp; {{object.name}} &nbsp;
+          
+                </h6></div>
+                <div>
+                    <p class="fw-light">{{object.created_date}}</p>
+                </div>
+                <div>contains 10 songs</div>
+            </div>
+            
+           </a>
+ 
+       </div>
+  {% empty %}
+  <p class="text-muted p-5 m-5">No playlists yet.</p>
+  {% endfor %}
+ </div>
+
+
+
+
+{%endblock%}

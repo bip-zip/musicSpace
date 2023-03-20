@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'musicmaker',
-    'account'
+    'account',
+    'django_bootstrap5'
 ]
 
 MIDDLEWARE = [

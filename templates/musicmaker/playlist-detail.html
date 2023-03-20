@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{%load static%}
+{% load django_bootstrap5 %}
+
+{% block bodyblock%}
+<div class="row">
+    <div class="col">
+        <div class="mb-0 pb-0 mx-3 d-flex justify-content-end">
+            <img height="150" style="position: relative; top:38px" src="{% static 'astro1.png'%}" alt="">
+          </div>
+          <h4 class="text-center">add songs to your playlist: {{playlist}}</h4>
+          <div class="border p-5">
+            <form action="" method="post" class="text-center">
+                {%csrf_token%}
+                {% bootstrap_form form layout='floating'  %}
+                <div class="d-flex justify-content-center my-3">
+                    <button class="btn btn-lg btn-primary mt-3">Add song to the playlist</button>
+                </div>
+
+
+            </form>
+          </div>
+
+
+    </div>
+    <div class="col">
+        <div class="ms-body py-2 mt-0 mx-3">
+            <h4 class="text-white text-center fw-light">songs list</h4>
+            
+          </div>
+          <div class="mx-3 p-2" style="height:60vh; overflow: auto;">
+          {% for object in songs %}
+                 <div class="py-2">
+                  <a href="" class="text-decoration-none text-dark">
+                      <div class="d-flex justify-content-around">
+                        <div>
+                            <p class="fw-light">{{forloop.counter}}</p>
+                        </div>
+                          <div>
+                            
+                            <h6 class="fw-light"> <i class="fa-solid fa-music"></i> &nbsp; {{object.title}} &nbsp;
+                    
+                          </h6></div>
+                          <div>
+                              <p class="fw-light">{{object.created_date}}</p>
+                          </div>
+                         
+                      </div>
+                      
+                     </a>
+           
+                 </div>
+            {% empty %}
+            <p class="text-muted text-center p-5 m-5">No added songs.</p>
+            {% endfor %}
+           </div>
+           <div class="mx-3 d-flex justify-content-end">
+            <div>
+                <button class="btn btn-text"> Load Excel File Instead</button>
+                <button class="btn btn-primary"> Download Playlist</button>
+            </div>
+           </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+{%endblock%}

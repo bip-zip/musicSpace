@@ -24,11 +24,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+        <form  method="post">
+          {%csrf_token%}
+          <input type="text" required placeholder="Name of your playlist" name="name" class="form-control">
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button> -->
-        <button type="button" class="btn btn-primary">Done</button>
+        <button type="submit" class="btn btn-primary">Done</button>
+      </form>
       </div>
     </div>
   </div>
