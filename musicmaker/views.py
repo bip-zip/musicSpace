@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import TemplateView, ListView, CreateView
 from .models import Playlist, Song
 from django.http import HttpResponseRedirect
-
+from pytube import YouTube
+import os
 
 
 class IndexView(TemplateView):
@@ -41,8 +42,24 @@ class PlaylistDetailView(CreateView):
         pl= self.kwargs['pk'] 
         obj = get_object_or_404(Playlist, id=pl)
         songs = Song.objects.filter(playlist=obj).order_by('-id')
-        context.update({ "songs":songs,'playlist':obj.name})
+        context.update({ "songs":songs,'playlist':obj})
         return context
 
-def download(request):
-    pass
+def download(request,pk):
+    obj = get_object_or_404(Playlist, id=pk)
+    songs = Song.objects.filter(playlist=obj)
+    directory = 'musicSpace ' + obj.name
+    parent_dir = "F:/"
+    path = os.path.join(parent_dir, directory)
+    os.mkdir(path)
+    for i in songs:
+        yt = YouTube(i.link)
+        video = yt.streams.filter(only_audio=True).first()
+        out_file = video.download(output_path=path)
+        base, ext = os.path.splitext(out_file)
+        new_file = base + '.mp3'
+        os.rename(out_file, new_file)
+    return redirect('musicmaker:user-pl')
+
+
+
