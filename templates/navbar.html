@@ -18,10 +18,17 @@
           <!-- <li class="nav-item">
             <a class="nav-link link fs-6" href="#">How it works?</a>
           </li> -->
+          {% if request.user.is_authenticated %}
 
+          <li class="nav-item">
+            <a class="nav-link link fs-6" href="{%url 'musicmaker:user-pl'%}">Your Playlists</a>
+          </li>
+          {%else%}
           <li class="nav-item">
             <a class="nav-link link fs-6" href="#">Join Now</a>
           </li>
+
+          {%endif%}
          
         </ul>
       </div>

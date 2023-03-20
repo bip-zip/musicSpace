@@ -8,7 +8,7 @@
         <div class="mb-0 pb-0 mx-3 d-flex justify-content-end">
             <img height="150" style="position: relative; top:38px" src="{% static 'astro1.png'%}" alt="">
           </div>
-          <h4 class="text-center">add songs to your playlist: {{playlist}}</h4>
+          <h4 class="text-start fw-light">add songs to your playlist: <b>{{playlist|truncatechars:15}}</b></h4>
           <div class="border p-5">
             <form action="" method="post" class="text-center">
                 {%csrf_token%}

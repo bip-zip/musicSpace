@@ -43,3 +43,6 @@ class PlaylistDetailView(CreateView):
         songs = Song.objects.filter(playlist=obj).order_by('-id')
         context.update({ "songs":songs,'playlist':obj.name})
         return context
+
+def download(request):
+    pass
