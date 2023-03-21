@@ -45,21 +45,80 @@ class PlaylistDetailView(CreateView):
         context.update({ "songs":songs,'playlist':obj})
         return context
 
+
+
+import os
+import zipfile
+from pytube import YouTube
+from django.http import HttpResponse
+import requests
+from io import BytesIO
+from pydub import AudioSegment
+
+
 def download(request,pk):
     obj = get_object_or_404(Playlist, id=pk)
     songs = Song.objects.filter(playlist=obj)
-    directory = 'musicSpace ' + obj.name
-    parent_dir = "F:/"
-    path = os.path.join(parent_dir, directory)
-    os.mkdir(path)
+    mp3_files = []
+    # Download MP3 audio for each link
     for i in songs:
         yt = YouTube(i.link)
-        video = yt.streams.filter(only_audio=True).first()
-        out_file = video.download(output_path=path)
-        base, ext = os.path.splitext(out_file)
-        new_file = base + '.mp3'
-        os.rename(out_file, new_file)
-    return redirect('musicmaker:user-pl')
+        audio = yt.streams.filter(only_audio=True).first()
+        if audio is not None:
+            out_file = audio.download(output_path='audio', filename_prefix='temp')
+            base, ext = os.path.splitext(out_file)
+            new_file = base + '.mp3'
+            os.rename(out_file, new_file)
+
+    # Create ZIP file of MP3 files
+    with zipfile.ZipFile('audio.zip', mode='w') as myzip:
+        for file in os.listdir('audio'):
+            if file.endswith('.mp3'):
+                myzip.write(os.path.join('audio', file), file)
+
+    # Download ZIP file
+    with open('audio.zip', 'rb') as f:
+        response = HttpResponse(f, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename=audio.zip'
+        return response
+    
+
+
+
+
+
+# import zipfile
+# import subprocess
+
+
+# def download(request,pk):
+#     obj = get_object_or_404(Playlist, id=pk)
+#     songs = Song.objects.filter(playlist=obj)
+#     mp3_files = []
+#     # subprocess.call(['youtube-dl', '--extract-audio', '--audio-format', 'mp3', 'https://www.youtube.com/watch?v=j5-yKhDd64s'])
+#     # filename = subprocess.check_output(['youtube-dl','--verbose', '--get-filename', '--extract-audio', '--audio-format', 'mp3', 'https://www.youtube.com/watch?v=j5-yKhDd64s' ])
+#     # filename = filename.decode('utf-8').strip()
+#     # mp3_files.append(filename)
+#     for i in songs:
+#         # Download mp3 file using youtube-dl
+#         subprocess.call(['youtube-dl', '--extract-audio', '--audio-format', 'mp3', i.link])
+#         # Get the name of the downloaded file
+#         filename = subprocess.check_output(['youtube-dl', '--get-filename', '--extract-audio', '--audio-format', 'mp3', i.link])
+#         filename = filename.decode('utf-8').strip()
+#         # Add the downloaded file to the list of mp3 files
+#         mp3_files.append(filename)
+#     # Create a zip folder containing all the mp3 files
+#     zip_filename = 'musicSpace - {}.zip'.format(obj.name)
+#     with zipfile.ZipFile(zip_filename, 'w') as zip:
+#         for file in mp3_files:
+#             zip.write(file)
+#             # Remove the original mp3 file
+#             os.remove(file)
+#     # Return the zip folder as a response
+#     response = HttpResponse(open(zip_filename, 'rb').read(), content_type='application/zip')
+#     response['Content-Disposition'] = 'attachment; filename="%s"' % zip_filename
+#     return response
+    
 
 
 

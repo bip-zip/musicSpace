@@ -17,6 +17,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  {%if request.user.is_authenticated %}
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -35,6 +36,25 @@
       </div>
     </div>
   </div>
+  {%else%}
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Seems like you aren't signed in.</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You need to signin to the site to create, download and share your playlists.
+      </div>
+      <div class="modal-footer">
+        
+        <a href="#" class="btn btn-outline-danger">Register</a>
+        <a href="#"  class="btn btn-primary">Login</a>
+      </form>
+      </div>
+    </div>
+  </div>
+  {%endif%}
 </div>
 
 
