@@ -12,8 +12,15 @@ class Playlist(models.Model):
     def __str__(self):
         return self.name
     
+    @property
+    def totalsongs(self):
+        return Song.objects.filter(playlist=self.id).count()
+    
 
 class Song(models.Model):
     title = models.CharField(max_length=100)
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
     link = models.URLField(null=False)
+
+    def __str__(self):
+        return self.title
