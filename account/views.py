@@ -6,6 +6,7 @@ from .forms import UserRegisterForm
 class RegisterView(CreateView):
     form_class = UserRegisterForm
     template_name = 'account/register.html'
+    success_url = '/auth'
 
 
 class SigninView(LoginView):

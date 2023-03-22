@@ -24,6 +24,15 @@ class UserPlaylistView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(user=self.request.user)
+    
+
+class PlaylistListView(ListView):
+    model = Playlist
+    template_name = 'musicmaker/playlist-list.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.order_by('-views')
 
 class PlaylistDetailView(CreateView):
     model = Song

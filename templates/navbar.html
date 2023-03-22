@@ -22,10 +22,10 @@
             <a class="nav-link  link fs-6" aria-current="page" href="#">Create Playlist</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link link fs-6" href="#">Recommend Me</a>
+            <a class="nav-link link fs-6" href="{% url 'musicmaker:playlists'%}">Recommend Me</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link link fs-6" href="{% url 'account:logout' %}">Lemme Go</a>
+            <a class="nav-link link fs-6" href="{% url 'account:logout' %}">Leave</a>
           </li>
           {%else%}
           <li class="nav-item">

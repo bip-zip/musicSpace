@@ -6,7 +6,7 @@
 </div>
 
 <div class="ms-body py-2 mt-0 mx-3">
-  <h4 class="text-white text-center fw-light">your playlists</h4>
+  <h4 class="text-white text-center fw-light">top playlists</h4>
   
 </div>
 <div class="mx-3 p-2" style="height:50vh; overflow: auto;">
@@ -21,13 +21,14 @@
                     <p class="fw-light">{{object.created_date}}</p>
                 </div>
                 <div> <b>{{object.totalsongs}}</b> &nbsp; songs</div>
+                <div>created by <b>{{object.user.username}}</b></div>
             </div>
             
            </a>
  
        </div>
   {% empty %}
-  <p class="text-muted text-center p-5 m-5">No playlists yet.</p>
+  <p class="text-muted p-5 m-5">No playlists yet.</p>
   {% endfor %}
  </div>
 

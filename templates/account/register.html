@@ -3,18 +3,23 @@
 {% load django_bootstrap5 %}
 
 {% block bodyblock%}
+<style>
+    .form-label{
+  display: none;
+}
+</style>
 <div class="m-5 p-5 container">
     <div class="col-lg-8 mx-auto  ">
         <div class="row">
            
             <div class="col bg-danger">
-                <h3 class="text-white fw-light text-center mt-4 pt-3">Join Now | musicSpace</h3>
+                <h3 class="text-white fw-light text-center mt-4 pt-3">joinNow | musicSpace</h3>
                 <div class=" p-5">
                     <form action="" method="post"  class="text-center">
                         {%csrf_token%}
                         {% bootstrap_form form   %}
                         <div class="d-flex justify-content-center my-3">
-                            <button class="btn btn-outline-light mt-3 ">Sign Me Up</button>
+                            <button class="btn btn-outline-light mt-3 ">signMeup</button>
                         </div>
         
         
@@ -24,8 +29,8 @@
 
 
             </div>
-            <div class="col-lg-5">
-                <img class="img-fluid mt-2"  src="{% static 'astro.png'%}" alt="">
+            <div class="col-lg-5 border">
+                <img class="img-fluid mt-5 "  src="{% static 'register.png'%}" alt="astronut image">
             </div>
         </div>
 
