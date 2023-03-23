@@ -4,11 +4,12 @@
 
 {% block bodyblock%}
 <div class="row">
-    <div class="col">
+    {% if playlist.user == request.user %}
+    <div class="col-lg-6">
         <div class="mb-0 pb-0 mx-3 d-flex justify-content-end">
             <img height="150" style="position: relative; top:38px" src="{% static 'astro1.png'%}" alt="">
           </div>
-          <h4 class="text-start fw-light">add songs to your playlist: <b>{{playlist.name|truncatechars:15}}</b></h4>
+          <h4 class="text-start fw-light" title="{{playlist.name}}">add songs to your playlist: <b>{{playlist.name|truncatechars:15}}</b></h4>
           <div class="border p-5">
             <form action="" method="post" class="text-center">
                 {%csrf_token%}
@@ -25,6 +26,7 @@
     </div>
     <div class="col">
         <div class="ms-body py-2 mt-0 mx-3">
+            
             <h4 class="text-white text-center fw-light">songs list</h4>
             
           </div>
@@ -62,6 +64,70 @@
             </div>
            </div>
     </div>
+    {%else%}
+    <div class="col-lg-6">
+        <div class="mb-0 pb-0 mx-3 d-flex justify-content-end">
+            <img height="175" style="position: relative; top:38px" src="{% static 'astro1.png'%}" alt="">
+          </div>
+          <h4 class="text-start fw-light" title="{{playlist.name}}">playlist name: <b>{{playlist.name|truncatechars:15}}</b></h4>
+          <div class="border p-5">
+           <h5><span class="fw-light">created by:</span> {{playlist.user.username}}</h5>
+           <h5><span class="fw-light">created on:</span> {{playlist.created_date}}</h5>
+           <h5><span class="fw-light">total songs:</span> {{playlist.totalsongs}}</h5>
+           <h5><span class="fw-light">views:</span> {{playlist.views}}</h5>
+           <div class="d-flex justify-content-end mt-5">
+            <button class="btn btn-primary">share this playlist</button>
+           </div>
+          </div>
+
+
+    </div>
+    
+    <div class="col-lg-6  m-auto">
+        
+
+    
+      
+        <div class="ms-body py-2 mt-0 mx-3">
+            
+            <h4 class="text-white text-center fw-light">songs list</h4>
+            
+          </div>
+          <div class="mx-3 p-2 " style="height:60vh; overflow: auto;">
+          {% for object in songs %}
+                 <div class="py-2">
+                  <a  class="text-decoration-none text-dark "  data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="sendData('{{object.title}}','{{object.link}}')"  data-url="{{object.link}}" data-title="{{object.title}}" >
+                      <div class="d-flex justify-content-between">
+                        <div class="text-center">
+                            <p class="fw-light">{{forloop.counter}}</p>
+                        </div>
+                          <div>
+                            
+                            <h6 class="fw-light"> <i class="fa-solid fa-music"></i> &nbsp; {{object.title}} &nbsp;
+                    
+                          </h6></div>
+                          <div>
+                              <p class="fw-light">{{object.created_date}}</p>
+                          </div>
+                         
+                      </div>
+                      
+                     </a>
+           
+                 </div>
+            {% empty %}
+            <p class="text-muted text-center p-5 mt-5">No added songs.</p>
+            {% endfor %}
+           </div>
+           <hr class="text-secondary pt-0 pb-0">
+           <div class="mx-3 d-flex justify-content-end">
+            <div>
+                <button class="btn btn-text"> Load Excel File Instead</button>
+                <a href="{%url 'musicmaker:download' pk=playlist.id%}"  class="btn btn-primary"> Download Playlist</a>
+            </div>
+           </div>
+    </div>
+    {%endif%}
 </div>
 
 
@@ -77,6 +143,7 @@
           fetching
         </div>
         <div class="modal-footer">
+            <small>In case of video unavailabe use above youtube link. </small>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
@@ -90,7 +157,10 @@ function sendData(title, link){
     const modalbody = document.getElementById('modalBody')
     const ylink = convertToEmbedUrl(link);
     modalTitle.innerHTML = title;
-    modalbody.innerHTML = `<iframe width="465" height="255" src="${ylink}" allow="autoplay; encrypted-media"></iframe>`;
+    modalbody.innerHTML = `<iframe width="465" height="255" src="${ylink}" allow="autoplay; encrypted-media"></iframe>
+    <br>
+  <small>Youtube link: <a href='${link}' target='_blank'>${link}</a></small>
+    `;
 }
 
 function convertToEmbedUrl(url) {
