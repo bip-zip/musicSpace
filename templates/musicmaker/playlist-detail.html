@@ -31,7 +31,7 @@
           <div class="mx-3 p-2" style="height:60vh; overflow: auto;">
           {% for object in songs %}
                  <div class="py-2">
-                  <a href="" class="text-decoration-none text-dark">
+                  <a  class="text-decoration-none text-dark "  data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="sendData('{{object.title}}','{{object.link}}')"  data-url="{{object.link}}" data-title="{{object.title}}" >
                       <div class="d-flex justify-content-between">
                         <div class="text-center">
                             <p class="fw-light">{{forloop.counter}}</p>
@@ -65,9 +65,52 @@
 </div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">loading</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          fetching
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+function sendData(title, link){
+    const modalTitle = document.getElementById('exampleModalLabel');
+    const modalbody = document.getElementById('modalBody')
+    const ylink = convertToEmbedUrl(link);
+    modalTitle.innerHTML = title;
+    modalbody.innerHTML = `<iframe width="465" height="255" src="${ylink}" allow="autoplay; encrypted-media"></iframe>`;
+}
+
+function convertToEmbedUrl(url) {
+  let videoId = '';
+  if (url.includes('youtube.com')) {
+    const urlParams = new URLSearchParams(new URL(url).search); // Parse URL parameters
+    videoId = urlParams.get('v'); // Extract video ID from URL parameters
+    if (!urlParams.has('autoplay')) {
+      url += '&autoplay=1'; // Add autoplay parameter if it's not already present
+    }
+  } else if (url.includes('youtu.be')) {
+    videoId = url.split('/')[1]; // Extract video ID from URL
+  }
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?${new URLSearchParams(new URL(url).search).toString()}`; // Construct embedded URL
+  return embedUrl;
+}
 
 
 
+</script>
 
 
 {%endblock%}
