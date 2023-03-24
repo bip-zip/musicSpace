@@ -60,7 +60,7 @@
            <div class="mx-3 d-flex justify-content-end">
             <div>
                 <button class="btn btn-text"> Load Excel File Instead</button>
-                <a href="{%url 'musicmaker:download' pk=playlist.id%}"  class="btn btn-primary"> Download Playlist</a>
+                <a id="download-link" href="{%url 'musicmaker:download' pk=playlist.id%}"  class="btn btn-primary"> Download Playlist</a>
             </div>
            </div>
     </div>
@@ -123,7 +123,7 @@
            <div class="mx-3 d-flex justify-content-end">
             <div>
                 <button class="btn btn-text"> Load Excel File Instead</button>
-                <a href="{%url 'musicmaker:download' pk=playlist.id%}"  class="btn btn-primary"> Download Playlist</a>
+                <a id="download-link" href="{%url 'musicmaker:download' pk=playlist.id%}"  class="btn btn-primary"> Download Playlist</a>
             </div>
            </div>
     </div>
@@ -149,7 +149,7 @@
       </div>
     </div>
   </div>
-
+{% include 'loader.html'%}
 <script>
 
 function sendData(title, link){
@@ -178,6 +178,29 @@ function convertToEmbedUrl(url) {
   return embedUrl;
 }
 
+
+      function showLoader() {
+        document.getElementById("loader").style.display = "block";
+      }
+    
+      function hideLoader() {
+        document.getElementById("loader").style.display = "none";
+      }
+      document.getElementById("download-link").addEventListener("click", function() {
+        showLoader();
+        document.getElementById("download-link").addEventListener("DOMContentLoaded", function() {
+          hideLoader()
+
+        
+    
+        
+      });
+
+    
+        
+      });
+hideLoader();
+  
 
 
 </script>

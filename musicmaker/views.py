@@ -83,5 +83,6 @@ def download(request,pk):
     with open('{}-musicSpace.zip'.format(obj.name), 'rb') as f:
         response = HttpResponse(f, content_type='application/zip')
         response['Content-Disposition'] = 'attachment; filename={}-musicSpace.zip'.format(obj.name)
+          # Render the loader template and the response
         return response
     
